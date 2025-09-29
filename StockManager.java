@@ -19,14 +19,26 @@ public class StockManager
     {
         stockList = new ArrayList<>();
     }
-
-    /**
+    
+       /**
      * Add a product to the list.
      * @param item The item to be added.
      */
     public void addProduct(Product item)
-    {
-        stockList.add(item);
+    {   
+        int IDNewProduct = item.getID();
+        boolean safeID = true;
+        for(Product product : stockList)
+        {
+            if(product.getID() == IDNewProduct)
+            {
+                safeID = false;
+            }
+        }
+        if(safeID)
+        {
+            stockList.add(item);
+        }
     }
     
     /**
@@ -37,6 +49,13 @@ public class StockManager
      */
     public void delivery(int id, int amount)
     {
+        for(Product product : stockList)
+        {
+            if(id == product.getID())
+            {
+                product.increaseQuantity(amount);
+            }
+        }
     }
     
     /**
@@ -46,6 +65,30 @@ public class StockManager
      */
     public Product findProduct(int id)
     {
+        for(Product product : stockList)
+        {
+            if(id == product.getID())
+            {
+                return product;
+            }
+        }
+        return null;
+    }
+    
+        /**
+     * Try to find a product in the stock with the given id.
+     * @return The identified product, or null if there is none
+     *         with a matching ID.
+     */
+    public Product findProductWithName(String name)
+    {
+        for(Product product : stockList)
+        {
+            if(name.equals(product.getName()))
+            {
+                return product;
+            }
+        }
         return null;
     }
     
@@ -58,6 +101,13 @@ public class StockManager
      */
     public int numberInStock(int id)
     {
+        for(Product product : stockList)
+        {
+            if(id == product.getID())
+            {
+                return product.getQuantity();
+            }
+        }
         return 0;
     }
 
@@ -66,5 +116,23 @@ public class StockManager
      */
     public void printProductDetails()
     {
+        for(Product product : stockList)
+        {
+            System.out.println(product.toString());
+        }
+    }
+    
+        /**
+     * Print details of all the products.
+     */
+    public void printProductsBelow(int ceiling)
+    {
+        for(Product product : stockList)
+        {
+            if(product.getQuantity() < ceiling)
+            {
+                System.out.println(product.toString());
+            }
+        }
     }
 }
