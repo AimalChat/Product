@@ -147,10 +147,17 @@ any alterations to it. Start by implementing the printProductDetails method to e
 that you are able to iterate over the collection of products. Just print out the details 
 of each Product returned, by calling its toString method.
 
-
 56b.
-
-
+    /**
+     * Print details of all the products.
+     */
+    public void printProductDetails()
+    {
+        for(Product product : stockList)
+        {
+            System.out.println(product.toString());
+        }
+    }
 
 57a. Implement the findProduct method. This should look through the collection for 
 a product whose id field matches the ID argument of this method. If a matching product 
@@ -164,8 +171,22 @@ be examined without finding a product to return. In this case, the null value sh
 returned. When looking for a match, you will need to call the getID method on a Product.
 
 57b.
-
-
+    /**
+     * Try to find a product in the stock with the given id.
+     * @return The identified product, or null if there is none
+     *         with a matching ID.
+     */
+    public Product findProduct(int id)
+    {
+        for(Product product : stockList)
+        {
+            if(id == product.getID())
+            {
+                return product;
+            }
+        }
+        return null;
+    }
 
 58a. Implement the numberInStock method. This should locate a product in the collection 
 with a matching ID and return the current quantity of that product as a method result. 
@@ -175,7 +196,24 @@ can call the findProduct method to do the searching and then call the getQuantit
 on the result. Take care over products that cannot be found, though.
 
 58b.
-
+    /**
+     * Locate a product with the given ID, and return how
+     * many of this item are in stock. If the ID does not
+     * match any product, return zero.
+     * @param id The ID of the product.
+     * @return The quantity of the given product in stock.
+     */
+    public int numberInStock(int id)
+    {
+        for(Product product : stockList)
+        {
+            if(id == product.getID())
+            {
+                return product.getQuantity();
+            }
+        }
+        return 0;
+    }
 
 
 59a. Implement the delivery method using a similar approach to that used in numberInStock. 
@@ -183,22 +221,91 @@ It should find the product with the given ID in the list of products and then ca
 increaseQuantity method.
 
 59b.
+    /**
+     * Receive a delivery of a particular product.
+     * Increase the quantity of the product by the given amount.
+     * @param id The ID of the product.
+     * @param amount The amount to increase the quantity by.
+     */
+    public void delivery(int id, int amount)
+    {
+        for(Product product : stockList)
+        {
+            if(id == product.getID())
+            {
+                product.increaseQuantity(amount);
+            }
+        }
+    }
 
+60a. 
+1-Challenge exercise Implement a method in StockManager to print details of all products 
+with stock levels below a given value (passed as a parameter to the method).
 
+2-Modify the addProduct method so that a new product cannot be added to the product list 
+with the sameID as an existing one.
 
-60a. Challenge exercise Implement a method in StockManager to print details of all products 
-with stock levels below a given value (passed as a parameter to the method). Modify the 
-addProduct method so that a new product cannot be added to the product list with the same
-ID as an existing one. Add to StockManager a method that finds a product from its name rather 
-than its ID:
+3-Add to StockManager a method that finds a product from its name rather than its ID:
  public Product findProduct(String name)
-In order to do this, you need to know that two String objects, s1 and s2, can be tested for 
-equality with the boolean expression:
+In order to do this, you need to know that two String objects, s1 and s2, can be tested 
+for equality with the boolean expression:
  s1.equals(s2)
 More details about comparing Strings can be found on this in Chapter 6
 
 60b.
 
+1.
+        /**
+     * Print details of all the products under the inputted limit.
+     */
+    public void printProductsBelow(int ceiling)
+    {
+        for(Product product : stockList)
+        {
+            if(product.getQuantity() < ceiling)
+            {
+                System.out.println(product.toString());
+            }
+        }
+    }
 
+2.
+       /**
+     * Add a product to the list.
+     * @param item The item to be added.
+     */
+    public void addProduct(Product item)
+    {   
+        int IDNewProduct = item.getID();
+        boolean safeID = true;
+        for(Product product : stockList)
+        {
+            if(product.getID() == IDNewProduct)
+            {
+                safeID = false;
+            }
+        }
+        if(safeID)
+        {
+            stockList.add(item);
+        }
+    }
 
+3.
+        /**
+     * Try to find a product in the stock with the given id.
+     * @return The identified product, or null if there is none
+     *         with a matching ID.
+     */
+    public Product findProductWithName(String name)
+    {
+        for(Product product : stockList)
+        {
+            if(name.equals(product.getName()))
+            {
+                return product;
+            }
+        }
+        return null;
+    }
 
